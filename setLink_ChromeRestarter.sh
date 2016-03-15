@@ -3,7 +3,7 @@
 # Set your 22hits.com URL here
 # Example:
 # HITS_URL="http://22hits.com/exchange.php?0123456789"
-HITS_URL="http://22hits.com/exchange.php?key=aaa551645f59519590fcd8082d49d0038aa0492c215bf3d977520d7236d9c91d"
+HITS_URL="https://ultraviews.net/wviewer.php?user=nghia2080"
 HITS_URL2="http://goo.gl/NBJAcz"
 HITS_URL3="http://exchange.hornyte.com/mE1qwiLxd7tl9dPYWlp5k6w74U03ZDAy"
 
