@@ -2,6 +2,7 @@
 if [ `ps -e | grep -c bot.sh` -gt 2 ]; then echo "Already running, i'm killing old process, please run it again!"; killall -9 Xvfb; killall -9 chrome; killall -9 chromium-browser; killall -9 chromium; killall -9 sleep; killall -9 bot.sh && exit 1; fi
 usage() { echo -e "Usage: $0 [-t <Timer to restart chrome (seconds)>] -o \"account,password\" [-l <Separate traffic exchange links with space delimiter(in quote)>]\nExample: $0 -t 3600 -l http://22hit...\nExample: $0 -t 3600 -l \"http://22hit... http://247webhit... http://...\"\nExample: $0 -t 3600 -o \"otohit_account,otohits_password\" -l \"http://22hit...\"\nExample: $0 -t 3600 -o \"otohit_account,otohits_password\"" 1>&2; exit 1; }
 [ $# -eq 0 ] && usage
+otolink=""
 while getopts ":ht:l:o:" arg; do
     case $arg in
         t)
@@ -12,6 +13,7 @@ while getopts ":ht:l:o:" arg; do
             ;;
         o)
             IFS=', ' read -r -a otohits <<< ${OPTARG}
+            otolink="http://www.otohits.net/account/wfautosurf"
             ;;
         h | *)
             usage
@@ -33,7 +35,7 @@ apt-get install -y psmisc
 apt-get install -y xvfb x11-xkb-utils xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable xfonts-cyrillic x11-apps
 apt-get install -y gtk2-engines-pixbuf libexif12 libxpm4 libxrender1 libgtk2.0-0
 apt-get install -y libnss3 libgconf-2-4
-apt-get install -y google-chrome-stable
+apt-get install -y chromium
 dpkg --configure -a
 apt-get install -f -y
 if [[ `lsb_release -rs` == "12.04" ]]
@@ -43,30 +45,27 @@ then
 fi
 echo "Killing old chrome and virtual X display..."
 pkill -9 -o chrome
-killall -9 chrome
+killall -9 chromium
 killall -9 Xvfb
 killall -9 sleep
 while :
 do
     echo "Downloading chrome user data dir profile..."
-    wget --no-check-certificate https://github.com/nghia2080/TE/raw/master/chromeBotTE.tar.gz -O /root/chromeBotTE.tar.gz
+    wget --no-check-certificate http://duclvz.github.io/chromeBotTE.tar.gz -O /root/chromeBotTE.tar.gz
     echo "Recreating/extracting chrome user data dir..."
     rm -fr /root/chromeBotTE/
-    tar -xf /root/chromeBotTE.tar.gz -C /root/
+    tar -xzf /root/chromeBotTE.tar.gz -C /root/
     echo "Starting virtual X display..."
     Xvfb :2 -screen 1 1024x768x16 -nolisten tcp & disown
     echo "Starting chrome TE viewer..."
     echo "Open link $links"
-    if [ -z "${otohits}" ]
+    if [ ! -z "${otohits}" ]
     then
-        DISPLAY=:2.1 google-chrome --no-sandbox --user-data-dir="/root/chromeBotTE" --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36" --disable-popup-blocking --incognito ${links} & disown
-        chromePID=$!
-    else
         sed -i "s/otoacc/${otohits[0]}/g" ./chromeBotTE/Default/Extensions/jikpgdfgobpifoiiojdngpekpacflahh/1.0_0/account.json
         sed -i "s/otopass/${otohits[1]}/g" ./chromeBotTE/Default/Extensions/jikpgdfgobpifoiiojdngpekpacflahh/1.0_0/account.json
-        DISPLAY=:2.1 google-chrome --no-sandbox --user-data-dir="/root/chromeBotTE" --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36" --disable-popup-blocking --incognito http://www.ytmonster.net/login ${links} & disown
-        chromePID=$!
     fi
+    DISPLAY=:2.1 chromium  --user-data-dir="/root/chromeBotTE" --user-agent="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36" --disable-popup-blocking --incognito ${otolink} ${links} & disown
+    chromePID=$!
     sleep ${timer}
     timeplus=$(shuf -i 10-100 -n 1)
     sleep ${timeplus}
