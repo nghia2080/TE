@@ -45,7 +45,11 @@ then
 fi
 echo "Killing old chrome and virtual X display..."
 pkill -9 -o chrome
-killall -9 google-chrome
+killall -9 chrome
+pkill -9 -o chromium
+killall -9 chromium
+pkill -9 -o chromium-browser
+killall -9 chromium-browser
 killall -9 Xvfb
 killall -9 sleep
 while :
