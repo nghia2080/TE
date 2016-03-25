@@ -44,7 +44,7 @@ then
 fi
 if [[ `lsb_release -si` == "Ubuntu" ]]
 then
-    apt-get install -y chromium-browser
+    apt-get install -y google-chrome
     browser="google-chrome"
 fi
 if [ -z "${browser}" ]; then
