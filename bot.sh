@@ -35,7 +35,7 @@ apt-get install -y psmisc
 apt-get install -y xvfb x11-xkb-utils xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable xfonts-cyrillic x11-apps
 apt-get install -y gtk2-engines-pixbuf libexif12 libxpm4 libxrender1 libgtk2.0-0
 apt-get install -y libnss3 libgconf-2-4
-apt-get install -y chromium
+apt-get install -y google-chrome
 dpkg --configure -a
 apt-get install -f -y
 if [[ `lsb_release -rs` == "12.04" ]]
@@ -45,7 +45,7 @@ then
 fi
 echo "Killing old chrome and virtual X display..."
 pkill -9 -o chrome
-killall -9 chromium
+killall -9 google-chrome
 killall -9 Xvfb
 killall -9 sleep
 while :
@@ -64,7 +64,7 @@ do
         sed -i "s/otoacc/${otohits[0]}/g" ./chromeBotTE/Default/Extensions/jikpgdfgobpifoiiojdngpekpacflahh/1.0_0/account.json
         sed -i "s/otopass/${otohits[1]}/g" ./chromeBotTE/Default/Extensions/jikpgdfgobpifoiiojdngpekpacflahh/1.0_0/account.json
     fi
-    DISPLAY=:2.1 chromium  --user-data-dir="/root/chromeBotTE" --user-agent="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36" --disable-popup-blocking --incognito ${otolink} ${links} & disown
+    DISPLAY=:2.1 google-chrome  --user-data-dir="/root/chromeBotTE" --user-agent="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36" --disable-popup-blocking --incognito ${otolink} ${links} & disown
     chromePID=$!
     sleep ${timer}
     timeplus=$(shuf -i 10-100 -n 1)
